@@ -11,9 +11,9 @@ import time
 # A bit hacky, but do this rather than redefine the function.
 # Has to be in testbuild, as we only copy testbuild to pbuilder.
 from testbuild import call
+import secrets
 
-import random
-file_num = random.randrange(100000)
+file_num = secrets.SystemRandom().randrange(100000)
 
 ## @brief Returns whether we could lock the file
 def get_lock(distro, arch):
