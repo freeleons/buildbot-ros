@@ -19,10 +19,7 @@
 # Extraneous code has been removed (e.g. commit-related methods).
 # A modification has been added using name to allow for multiple instances.
 
-import itertools
 import os
-import requests
-import urllib
 from datetime import datetime
 
 from twisted.internet import defer
@@ -32,6 +29,7 @@ from twisted.python import log
 from buildbot import config
 from buildbot.changes import base
 from buildbot.util.state import StateMixin
+from security import safe_requests
 
 
 class GitPRPoller(base.PollingChangeSource, StateMixin):
@@ -113,7 +111,7 @@ class GitPRPoller(base.PollingChangeSource, StateMixin):
         # get owner+repo from repo url (e.g. 'git@github.com:owner/reponame.git')
         owner_repo = (self.repourl.split(":")[1]).split(".")[0]
         url = "https://api.github.com/repos/" + owner_repo + "/pulls"
-        r = requests.get(url, headers=self.auth_header)
+        r = safe_requests.get(url, headers=self.auth_header)
         
         # Store xtag for next use to prevent spamming GitHub
         self.auth_header.update({'If-None-Match': r.headers['etag']})
