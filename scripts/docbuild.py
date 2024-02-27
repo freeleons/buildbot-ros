@@ -2,7 +2,6 @@
 
 # This file is the actual docbuild that is run
 
-from __future__ import print_function
 import sys, os, shutil, subprocess
 
 ## @brief Build the docs (using doxygen/epydoc/etc)

@@ -2,7 +2,6 @@
 
 # This file is the actual buildtest that is run
 
-from __future__ import print_function
 import sys, os, subprocess, shutil
 
 GTESTPASS = '[       OK ]'

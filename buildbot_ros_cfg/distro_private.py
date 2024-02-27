@@ -3,7 +3,6 @@
 # Checks out the distro to local disk and builds index from that copy
 #
 
-from __future__ import print_function
 from rosdistro import *
 import subprocess, sys
 

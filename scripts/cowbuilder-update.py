@@ -2,7 +2,6 @@
 
 # This is used to setup the cowbuilder
 
-from __future__ import print_function
 import sys
 import os
 import subprocess

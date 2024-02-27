@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from rosdistro import *
 from rosdistro.dependency_walker import *
