@@ -6,10 +6,11 @@
 from __future__ import print_function
 from rosdistro import *
 import subprocess, sys
+from security import safe_command
 
 ## @brief Call a command
 def call(command):
-    helper = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+    helper = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
     while True:
         output = helper.stdout.readline().decode('utf8', 'replace')
         if helper.returncode is not None or not output:
