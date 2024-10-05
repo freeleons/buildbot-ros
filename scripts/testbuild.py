@@ -4,6 +4,7 @@
 
 from __future__ import print_function
 import sys, os, subprocess, shutil
+from security import safe_command
 
 GTESTPASS = '[       OK ]'
 GTESTFAIL = '[  FAILED  ]'
@@ -170,7 +171,7 @@ def run_build_and_test(workspace, rosdistro):
 ## @param command Should be a list
 def call(command, envir=None, verbose=True, return_output=False):
     print('Executing command "%s"' % ' '.join(command))
-    helper = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True, env=envir)
+    helper = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True, env=envir)
     if return_output:
         res = ''
     while True:
@@ -199,7 +200,7 @@ def get_ros_env(setup_file):
     res = os.environ
     print('Retrieve the ROS build environment by sourcing %s' % setup_file)
     command = ['bash', '-c', 'source %s && env' % setup_file]
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
+    proc = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE)
     for line in proc.stdout:
         (key, _, value) = line.partition("=")
         res[key] = value.split('\n')[0]
