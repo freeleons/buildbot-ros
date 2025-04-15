@@ -4,6 +4,7 @@
 
 from __future__ import print_function
 import sys, os, shutil, subprocess
+from security import safe_command
 
 ## @brief Build the docs (using doxygen/epydoc/etc)
 ## @param workspace A bind-mounted directory to build from/in
@@ -63,7 +64,7 @@ def search_for_packages(directory, path, package_path):
 ## @param command Should be a list
 def call(command, envir=None):
     print('Executing command "%s"' % ' '.join(command))
-    helper = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True, env=envir)
+    helper = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True, env=envir)
     while True:
         output = helper.stdout.readline().decode('utf8', 'replace')
         if helper.returncode is not None or not output:
@@ -81,7 +82,7 @@ def get_ros_env(setup_file):
     res = os.environ
     print('Retrieve the ROS build environment by sourcing %s' % setup_file)
     command = ['bash', '-c', 'source %s && env' % setup_file]
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
+    proc = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE)
     for line in proc.stdout:
         (key, _, value) = line.partition("=")
         res[key] = value.split('\n')[0]
