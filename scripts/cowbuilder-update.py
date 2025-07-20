@@ -12,6 +12,7 @@ import time
 # Has to be in testbuild, as we only copy testbuild to pbuilder.
 from testbuild import call
 import secrets
+from security import safe_command
 
 file_num = secrets.SystemRandom().randrange(100000)
 
@@ -104,7 +105,7 @@ def make_cowbuilder(distro, arch, keys):
                '--basepath', basepath(distro, arch)]
                #'--othermirror', defaultmirrors(distro)]
     print('Executing command "%s"' % ' '.join(command))
-    cowbuilder = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+    cowbuilder = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = cowbuilder.communicate(input="""echo "Installing python"
 apt-get install python -y
 echo "Installing wget"
