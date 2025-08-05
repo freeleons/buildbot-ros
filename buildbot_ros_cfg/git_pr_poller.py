@@ -113,7 +113,7 @@ class GitPRPoller(base.PollingChangeSource, StateMixin):
         # get owner+repo from repo url (e.g. 'git@github.com:owner/reponame.git')
         owner_repo = (self.repourl.split(":")[1]).split(".")[0]
         url = "https://api.github.com/repos/" + owner_repo + "/pulls"
-        r = requests.get(url, headers=self.auth_header)
+        r = requests.get(url, headers=self.auth_header, timeout=60)
         
         # Store xtag for next use to prevent spamming GitHub
         self.auth_header.update({'If-None-Match': r.headers['etag']})
